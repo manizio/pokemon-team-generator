@@ -1,0 +1,11 @@
+{{ define "team" }}
+    {{ range . }}
+    <div class="nes-container with-title is-centered team-box">
+        <p class="title">{{ .Species.Name }}</p>
+        <img src="{{ .Sprite.FrontDefault }}" />
+    </div>
+
+    {{ end }}
+
+{{ end }}
+

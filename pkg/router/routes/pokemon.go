@@ -6,6 +6,11 @@ import (
 )
 var pokemonRoutes = []Route {
 	{
+		URI: "/",
+		Method: http.MethodGet,
+		F: controllers.LoadHomePage,
+	},
+	{
 		URI: "/team",
 		Method: http.MethodGet,
 		F: controllers.CreateTeam,

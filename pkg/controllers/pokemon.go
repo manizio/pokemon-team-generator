@@ -6,6 +6,9 @@ import (
 	"pokemon-team-generator/pkg/utils"
 )
 
+func LoadHomePage(w http.ResponseWriter, r *http.Request) {
+	utils.ExecTemplate(w, "home", nil)
+}
 // Cria um time de 6 Pokémons Aleatórios
 func CreateTeam(w http.ResponseWriter, r *http.Request) {
 	teamChannel := make(chan models.Pokemon, 6)
@@ -26,5 +29,5 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 	for range 6 {
 		team = append(team, <-teamChannel)
 	}
-	utils.ExecTemplate(w, "home", team)
+	utils.ExecTemplate(w, "team", team)
 }
