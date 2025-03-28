@@ -1,0 +1,46 @@
+{{ define "home" }}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Teste</title>
+    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center">
+        <div class="nes-table-responsive is-centered">
+            <table class="nes-table is-bordered" style="margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Sprite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range. }}
+                    <tr>
+                        <td>{{ .ID }}</td>
+                        <td>{{ .Species.Name }}</td>
+                        <td><img src="{{ .Sprite.FrontDefault }}" /></td>
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
+{{ end }}
