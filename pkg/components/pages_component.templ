@@ -1,0 +1,72 @@
+package components
+
+templ scripts() {
+<!--Stylesheets-->
+<link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bruno+Ace&family=Press+Start+2P&display=swap" rel="stylesheet" />
+<link href="static/css/style.css" rel="stylesheet" />
+<!--HTMX-->
+<script src="https://unpkg.com/htmx.org@2.0.4"></script>
+}
+
+templ HomePage() {
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Teste</title>
+    @scripts()
+    <style>
+    </style>
+</head>
+
+<body>
+    <form class="form-container">
+        <div>
+            <h2 class="">
+                Gerar time aleatório
+            </h2>
+            @GameSelector()
+        </div>
+        <div>
+            <button hx-post="/team" hx-target="#team-div" class="nes-btn is-primary">
+                Gerar
+            </button>
+        </div>
+    </form>
+    <div id="team-div" class="center"></div>
+</body>
+
+</html>
+}
+
+templ GameSelector() {
+    <label for="default_select">Selecione uma Pokedex</label>
+    <div class="nes-select">
+        <select name="pokedex" required id="default_select">
+            <option value="1">Todas as Pokedexes</option>
+            <option value="2">Red/Blue/Yellow</option>
+            <option value="3">Gold/Silver/Crystal</option>
+            <option value="4">Ruby/Sapphire/Emerald</option>
+            <option value="5">Diamond/Pearl</option>
+            <option value="6">Platinum</option>
+            <option value="7">Heart Gold/Soul Silver</option>
+            <option value="8">Black/White</option>
+            <option value="9">Black 2/White 2</option>
+            <option value="12">X/Y</option>
+            <option value="15">Omega Ruby/Alpha Sapphire</option>
+            <option value="16">Sun/Moon</option>
+            <option value="21">Ultra Sun/Ultra Moon</option>
+            <option value="26">Let's Go Pikachu/Let's Go Eevee</option>
+            <option value="27">Sword/Shield</option>
+            <option value="28">Sword/Shield - Isle of Armor</option>
+            <option value="29">Sword/Shield - Crown Tundra</option>
+            <option value="30">Legends: Arceus</option>
+            <option value="31">Scarlet/Violet</option>
+            <option value="32">Scarlet/Violet - Teal Mask</option>
+            <option value="33">Scarlet/Violet - Indigo Disk</option>
+        </select>
+    </div>
+}

@@ -26,6 +26,24 @@ func (p *Pokemon) FormatName() {
 	p.Species.Name = cases.Title(language.English, cases.Compact).String(p.Species.Name)
 }
 
+func GetSpeciesID(url string) (int, error) {
+	res, err := requests.MakeRequest("GET", url, nil)
+
+	if err != nil {
+		return -1, err
+	}
+	defer res.Body.Close()
+
+	var species struct {
+		ID int `json:"id"`
+	}
+	if err = json.NewDecoder(res.Body).Decode(&species); err != nil {
+		return -1, err
+	}
+
+	return species.ID, nil
+
+}
 func GetRandomPokemon() (Pokemon, error) {
 	number := utils.GenerateRandomNumber()
 	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%v", number)

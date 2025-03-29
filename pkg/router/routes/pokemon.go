@@ -12,7 +12,7 @@ var pokemonRoutes = []Route {
 	},
 	{
 		URI: "/team",
-		Method: http.MethodGet,
+		Method: http.MethodPost,
 		F: controllers.CreateTeam,
 	},
 }

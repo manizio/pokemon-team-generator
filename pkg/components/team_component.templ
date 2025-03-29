@@ -1,0 +1,12 @@
+package components
+
+import "pokemon-team-generator/pkg/models"
+
+templ Team(team []models.Pokemon) {
+    for _, pokemon := range team {
+        <div class="nes-container with-title is-centered team-box">
+            <p class="title">{ pokemon.Species.Name }</p>
+            <img src={ pokemon.Sprite.FrontDefault } />
+        </div>
+    }
+}

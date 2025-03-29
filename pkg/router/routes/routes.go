@@ -21,5 +21,9 @@ func Configure(r *mux.Router) *mux.Router {
 			route.F,
 		).Methods(route.Method)
 	}
+
+	fs := http.FileServer(http.Dir("./static/"))
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static", fs))
+
 	return r
 }
