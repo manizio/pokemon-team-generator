@@ -15,4 +15,9 @@ var pokemonRoutes = []Route {
 		Method: http.MethodPost,
 		F: controllers.CreateTeam,
 	},
+	{
+		URI: "/swap",
+		Method: http.MethodPost,
+		F: controllers.SwapPokemon,
+	},
 }

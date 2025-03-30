@@ -1,12 +1,27 @@
 package components
 
 import "pokemon-team-generator/pkg/models"
+import "fmt"
 
 templ Team(team []models.Pokemon) {
-    for _, pokemon := range team {
-        <div class="nes-container with-title is-centered team-box">
-            <p class="title">{ pokemon.Species.Name }</p>
-            <img src={ pokemon.Sprite.FrontDefault } />
+    for i, pokemon := range team {
+        <div class="pokemon-box">
+            <div id={ fmt.Sprintf("box-%d", i)}>
+                @PokemonDiv(pokemon)
+            </div>
+            <div class="pokemon-controls">
+                <p class="nes-btn is-success" 
+                    hx-post="/swap" 
+                    hx-target={ fmt.Sprintf("#box-%d", i)}
+                    hx-include="#pokedex">Swap</p>
+            </div>
         </div>
     }
+}
+
+templ PokemonDiv(pokemon models.Pokemon) {
+    <div class="nes-container with-title is-centered team-box">
+        <p class="title">{ pokemon.Species.Name }</p>
+        <img src={ pokemon.Sprite.FrontDefault } />
+    </div>
 }

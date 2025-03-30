@@ -38,7 +38,7 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 		go func(id int) {
 			pokemon, err := models.GetPokemonByID(id)
 			if err != nil {
-				return
+				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}
 			pokemon.FormatName()
 
@@ -51,6 +51,38 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 	}
 
 	components.Team(team).Render(r.Context(), w)
+}
+
+func SwapPokemon(w http.ResponseWriter, r *http.Request) {
+
+	r.ParseForm()
+
+	pokedexID, err := strconv.Atoi(r.FormValue("pokedex"))
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	fullPokedex, err := getFullPokedex(pokedexID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	dexLen := len(fullPokedex.PokemonEntries)
+	randomIdx := utils.GenerateRandomNumberN(dexLen)
+	pokeID, _ := models.GetSpeciesID(
+		fullPokedex.PokemonEntries[randomIdx].PokemonSpecies.Url,
+	)
+
+	pokemon, err := models.GetPokemonByID(pokeID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	pokemon.FormatName()
+
+	components.PokemonDiv(pokemon).Render(r.Context(), w)
+
 }
 
 func getFullPokedex(pokedexID int) (models.Pokedex, error) {
