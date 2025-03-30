@@ -27,11 +27,23 @@ type Pokemon struct {
 	} `json:"sprites"`
 	IsMythical  bool
 	IsLegendary bool
+	Types []PokemonType `json:"types"`
+}
+
+func (p *Pokemon) Format() {
+	p.FormatName()
+	p.FormatType()
 }
 
 func (p *Pokemon) FormatName() {
 	p.Species.Name = strings.Replace(p.Species.Name, "-", " ", -1)
 	p.Species.Name = cases.Title(language.English, cases.Compact).String(p.Species.Name)
+}
+
+func (p *Pokemon) FormatType() {
+	for _, t := range p.Types {
+		t.Type.Name = cases.Title(language.English, cases.Compact).String(t.Type.Name)
+	}
 }
 
 func GetSpeciesInfo(url string) (SpeciesInfo, error) {

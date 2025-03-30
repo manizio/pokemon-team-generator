@@ -39,7 +39,94 @@
     margin: 0.5rem;
 }
 
-.is-poison {
-    box-shadow: 0 .5em purple, 0 -.5em purple, .5em 0 purple, -.5em 0 purple;
-    background-color: purple;
+
+/* Type Classes */
+.is-bug-type {
+    box-shadow: 0 .5em #A9B91C, 0 -.5em #A9B91C, .5em 0 #A9B91C, -.5em 0 #A9B91C;
+    background-color: #A9B91C;
+}
+
+.is-dark-type {
+    box-shadow: 0 .5em #503B2D, 0 -.5em #503B2D, .5em 0 #503B2D, -.5em 0 #503B2D;
+    background-color: #503B2D;
+}
+
+.is-dragon-type {
+    box-shadow: 0 .5em #7A62E3, 0 -.5em #7A62E3, .5em 0 #7A62E3, -.5em 0 #7A62E3;
+    background-color: #7A62E3;
+}
+
+.is-electric-type {
+    box-shadow: 0 .5em #F4B103, 0 -.5em #F4B103, .5em 0 #F4B103, -.5em 0 #F4B103;
+    background-color: #F4B103;
+}
+
+.is-fairy-type {
+    box-shadow: 0 .5em #F5B0F5, 0 -.5em #F5B0F5, .5em 0 #F5B0F5, -.5em 0 #F5B0F5;
+    background-color: #F5B0F5;
+}
+
+.is-fighting-type {
+    box-shadow: 0 .5em #80331B, 0 -.5em #80331B, .5em 0 #80331B, -.5em 0 #80331B;
+    background-color: #80331B;
+}
+
+.is-fire-type {
+    box-shadow: 0 .5em #F03E00, 0 -.5em #F03E00, .5em 0 #F03E00, -.5em 0 #F03E00;
+    background-color: #F03E00;
+}
+
+.is-flying-type {
+    box-shadow: 0 .5em #98A9F5, 0 -.5em #98A9F5, .5em 0 #98A9F5, -.5em 0 #98A9F5;
+    background-color: #98A9F5;
+}
+
+.is-ghost-type {
+    box-shadow: 0 .5em #5D5DB2, 0 -.5em #5D5DB2, .5em 0 #5D5DB2, -.5em 0 #5D5DB2;
+    background-color: #5D5DB2;
+}
+
+.is-grass-type {
+    box-shadow: 0 .5em #66BE27, 0 -.5em #66BE27, .5em 0 #66BE27, -.5em 0 #66BE27;
+    background-color: #66BE27;
+}
+
+.is-ground-type {
+    box-shadow: 0 .5em #D3B356, 0 -.5em #D3B356, .5em 0 #D3B356, -.5em 0 #D3B356;
+    background-color: #D3B356;
+}
+
+.is-ice-type {
+    box-shadow: 0 .5em #ADEAFE, 0 -.5em #ADEAFE, .5em 0 #ADEAFE, -.5em 0 #ADEAFE;
+    background-color: #ADEAFE;
+}
+
+.is-normal-type {
+    box-shadow: 0 .5em #C9C4BC, 0 -.5em #C9C4BC, .5em 0 #C9C4BC, -.5em 0 #C9C4BC;
+    background-color: #C9C4BC;
+}
+
+.is-poison-type {
+    box-shadow: 0 .5em #934494, 0 -.5em #934494, .5em 0 #934494, -.5em 0 #934494;
+    background-color: #934494;
+}
+
+.is-psychic-type{
+    box-shadow: 0 .5em #ED4581, 0 -.5em #ED4581, .5em 0 #ED4581, -.5em 0 #ED4581;
+    background-color: #ED4581;
+}
+
+.is-rock-type {
+    box-shadow: 0 .5em #BEA65B, 0 -.5em #BEA65B, .5em 0 #BEA65B, -.5em 0 #BEA65B;
+    background-color: #BEA65B;
+}
+
+.is-steel-type {
+    box-shadow: 0 .5em #B4B4C2, 0 -.5em #B4B4C2, .5em 0 #B4B4C2, -.5em 0 #B4B4C2;
+    background-color: #B4B4C2;
+}
+
+.is-water-type {
+    box-shadow: 0 .5em #3A9EFE, 0 -.5em #3A9EFE, .5em 0 #3A9EFE, -.5em 0 #3A9EFE;
+    background-color: #3A9EFE;
 }

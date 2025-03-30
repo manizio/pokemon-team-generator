@@ -26,9 +26,19 @@ templ PokemonDiv(pokemon models.Pokemon) {
     </p>
     @checkCategory(pokemon)
     <img src={ pokemon.Sprite.FrontDefault } />
+    @PokemonTypes(pokemon.Types)
 </div>
 }
 
+templ PokemonTypes(pokemonTypes []models.PokemonType) {
+    <div style="margin-top: 1rem; width: 100%; font-size: 1rem; justify-content: center; text-align: center; display: flex;">
+            for _, t := range pokemonTypes {
+                <div class="nes-badge is-small" style="font-size: 0.5rem; display: flex; flex-flow: column; text-align: center; justify-content: center;">
+                    <span class={fmt.Sprintf("is-%s-type", t.Type.Name)} style="color: white; -webkit-text-stroke: 0.1px;">{ t.Type.Name }</span>
+                </div>
+            }
+    </div>
+}
 templ checkCategory (pokemon models.Pokemon) {
     if pokemon.IsLegendary {
         <div style="font-size: 1rem; justify-content: center; display: flex; ">

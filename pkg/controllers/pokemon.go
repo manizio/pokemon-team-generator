@@ -43,7 +43,7 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}
-			pokemon.FormatName()
+			pokemon.Format()
 
 			pokemon.IsMythical = pokeInfo.IsMythical
 			pokemon.IsLegendary = pokeInfo.IsLegendary
@@ -86,7 +86,7 @@ func SwapPokemon(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	pokemon.FormatName()
+	pokemon.Format()
 
 	pokemon.IsMythical = pokeInfo.IsMythical
 	pokemon.IsLegendary = pokeInfo.IsLegendary
