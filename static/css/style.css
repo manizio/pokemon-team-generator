@@ -12,8 +12,10 @@
     flex-flow: column;
     justify-content: center;
     align-items: center;
+    row-gap: 1rem;
     margin-top: 3rem;
     margin-bottom: auto;
+    row-gap: 1rem;
 }
 
 .team-box {
@@ -25,7 +27,6 @@
     row-gap: 3rem;
 }
 
-
 .pokemon-controls {
     display: flex;
     flex-flow: row;
@@ -36,4 +37,9 @@
 
 .pokemon-controls p {
     margin: 0.5rem;
+}
+
+.is-poison {
+    box-shadow: 0 .5em purple, 0 -.5em purple, .5em 0 purple, -.5em 0 purple;
+    background-color: purple;
 }

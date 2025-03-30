@@ -58,7 +58,7 @@ func HomePage() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!doctype html><html><head><title>Teste</title>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!doctype html><html><head><title>Gerar Time</title>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -66,7 +66,7 @@ func HomePage() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<style>\n    </style></head><body><form class=\"form-container\"><div><h2 class=\"\">Gerar time aleatório</h2>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<style>\n    </style></head><body><form class=\"form-container\"><div style=\"display: flex; flex-flow: column; row-gap: 1rem;\"><h2 style=\"text-align: center;\"><p>Gerar time aleatório</p></h2><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -74,7 +74,7 @@ func HomePage() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><div><button hx-post=\"/team\" hx-target=\"#team-div\" class=\"nes-btn is-primary\">Gerar</button></div></form><div id=\"team-div\" class=\"center\"></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div><div><button hx-post=\"/team\" hx-target=\"#team-div\" class=\"nes-btn is-primary\">Gerar</button></div></form><div id=\"team-div\" class=\"center\"></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

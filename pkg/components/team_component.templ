@@ -3,25 +3,46 @@ package components
 import "pokemon-team-generator/pkg/models"
 import "fmt"
 
+// Exibe o time sorteado
 templ Team(team []models.Pokemon) {
-    for i, pokemon := range team {
-        <div class="pokemon-box">
-            <div id={ fmt.Sprintf("box-%d", i)}>
-                @PokemonDiv(pokemon)
-            </div>
-            <div class="pokemon-controls">
-                <p class="nes-btn is-success" 
-                    hx-post="/swap" 
-                    hx-target={ fmt.Sprintf("#box-%d", i)}
-                    hx-include="#pokedex">Swap</p>
+for i, pokemon := range team {
+<div class="pokemon-box">
+    <div id={ fmt.Sprintf("box-%d", i)}>
+        @PokemonDiv(pokemon)
+    </div>
+    <div class="pokemon-controls">
+        <p class="nes-btn is-success" hx-post="/swap" hx-target={ fmt.Sprintf("#box-%d", i)} hx-include="#pokedex">Swap
+        </p>
+    </div>
+</div>
+}
+}
+
+// Div com o pokémon sorteado
+templ PokemonDiv(pokemon models.Pokemon) {
+<div class="nes-container with-title is-centered team-box">
+    <p class="title">
+        { pokemon.Species.Name }
+    </p>
+    @checkCategory(pokemon)
+    <img src={ pokemon.Sprite.FrontDefault } />
+</div>
+}
+
+templ checkCategory (pokemon models.Pokemon) {
+    if pokemon.IsLegendary {
+        <div style="font-size: 1rem; justify-content: center; display: flex; ">
+            <div class="nes-badge is-small" style="font-size: 0.5rem;display: flex; text-align: center;">
+                <span class="is-warning is-small">Lendário</span>
             </div>
         </div>
     }
-}
+    else if pokemon.IsMythical {
+        <div style="font-size: 1rem; justify-content: center; display: flex; ">
+            <div class="nes-badge is-small" style="font-size: 0.5rem;display: flex; text-align: center;">
+                <span class="is-primary is-small">Mítico</span>
+            </div>
+        </div>
 
-templ PokemonDiv(pokemon models.Pokemon) {
-    <div class="nes-container with-title is-centered team-box">
-        <p class="title">{ pokemon.Species.Name }</p>
-        <img src={ pokemon.Sprite.FrontDefault } />
-    </div>
+    }
 }

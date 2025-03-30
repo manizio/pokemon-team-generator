@@ -9,10 +9,12 @@ import (
 	"strconv"
 )
 
+// Carrega a página inicial
 func LoadHomePage(w http.ResponseWriter, r *http.Request) {
 	components.HomePage().Render(r.Context(), w)
 }
-// Cria um time de 6 Pokémons Aleatórios
+
+// Cria um time de 6 Pokémons aleatórios
 func CreateTeam(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -32,18 +34,22 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 	for range 6 {
 		dexLen := len(fullPokedex.PokemonEntries)
 		randomIdx := utils.GenerateRandomNumberN(dexLen)
-		pokeID, _ := models.GetSpeciesID(
+		pokeInfo, _ := models.GetSpeciesInfo(
 			fullPokedex.PokemonEntries[randomIdx].PokemonSpecies.Url,
 		)
-		go func(id int) {
-			pokemon, err := models.GetPokemonByID(id)
+
+		go func(pokeInfo models.SpeciesInfo) {
+			pokemon, err := models.GetPokemonByID(pokeInfo.ID)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}
 			pokemon.FormatName()
 
+			pokemon.IsMythical = pokeInfo.IsMythical
+			pokemon.IsLegendary = pokeInfo.IsLegendary
+
 			teamChannel <- pokemon
-		}(pokeID)
+		}(pokeInfo)
 	}
 
 	for range 6 {
@@ -53,6 +59,7 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 	components.Team(team).Render(r.Context(), w)
 }
 
+// Troca o Pokémon selecionado
 func SwapPokemon(w http.ResponseWriter, r *http.Request) {
 
 	r.ParseForm()
@@ -70,21 +77,25 @@ func SwapPokemon(w http.ResponseWriter, r *http.Request) {
 
 	dexLen := len(fullPokedex.PokemonEntries)
 	randomIdx := utils.GenerateRandomNumberN(dexLen)
-	pokeID, _ := models.GetSpeciesID(
+	pokeInfo, _ := models.GetSpeciesInfo(
 		fullPokedex.PokemonEntries[randomIdx].PokemonSpecies.Url,
 	)
 
-	pokemon, err := models.GetPokemonByID(pokeID)
+	pokemon, err := models.GetPokemonByID(pokeInfo.ID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	pokemon.FormatName()
 
+	pokemon.IsMythical = pokeInfo.IsMythical
+	pokemon.IsLegendary = pokeInfo.IsLegendary
+
 	components.PokemonDiv(pokemon).Render(r.Context(), w)
 
 }
 
+// Obtém a Pokédex do jogo selecionado
 func getFullPokedex(pokedexID int) (models.Pokedex, error) {
 	var fullPokedex models.Pokedex
 	var lastID int

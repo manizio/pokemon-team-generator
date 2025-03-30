@@ -16,7 +16,7 @@ templ HomePage() {
 <html>
 
 <head>
-    <title>Teste</title>
+    <title>Gerar Time</title>
     @scripts()
     <style>
     </style>
@@ -24,11 +24,13 @@ templ HomePage() {
 
 <body>
     <form class="form-container">
-        <div>
-            <h2 class="">
-                Gerar time aleatório
+        <div style="display: flex; flex-flow: column; row-gap: 1rem;">
+            <h2 style="text-align: center;">
+                <p>Gerar time aleatório</p>
             </h2>
-            @GameSelector()
+            <div>
+                @GameSelector()
+            </div>
         </div>
         <div>
             <button hx-post="/team" hx-target="#team-div" class="nes-btn is-primary">

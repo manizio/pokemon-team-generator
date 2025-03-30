@@ -11,14 +11,22 @@ import (
 	"golang.org/x/text/language"
 )
 
+type SpeciesInfo struct {
+	ID          int  `json:"id"`
+	IsMythical  bool `json:"is_mythical"`
+	IsLegendary bool `json:"is_legendary"`
+}
+
 type Pokemon struct {
-	ID int `json:"id"`
+	ID      int `json:"id"`
 	Species struct {
 		Name string `json:"name"`
 	} `json:"species"`
 	Sprite struct {
 		FrontDefault string `json:"front_default"`
 	} `json:"sprites"`
+	IsMythical  bool
+	IsLegendary bool
 }
 
 func (p *Pokemon) FormatName() {
@@ -26,22 +34,21 @@ func (p *Pokemon) FormatName() {
 	p.Species.Name = cases.Title(language.English, cases.Compact).String(p.Species.Name)
 }
 
-func GetSpeciesID(url string) (int, error) {
+func GetSpeciesInfo(url string) (SpeciesInfo, error) {
 	res, err := requests.MakeRequest("GET", url, nil)
 
 	if err != nil {
-		return -1, err
+		return SpeciesInfo{}, err
 	}
 	defer res.Body.Close()
 
-	var species struct {
-		ID int `json:"id"`
-	}
+	var species SpeciesInfo
+
 	if err = json.NewDecoder(res.Body).Decode(&species); err != nil {
-		return -1, err
+		return SpeciesInfo{}, err
 	}
 
-	return species.ID, nil
+	return species, nil
 
 }
 func GetRandomPokemon() (Pokemon, error) {
@@ -86,4 +93,3 @@ func GetPokemonByID(id int) (Pokemon, error) {
 
 	return p, nil
 }
-
