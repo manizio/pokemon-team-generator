@@ -1,4 +1,13 @@
+@media only screen and (max-width: 900px) {
+    .center {
+        display: flex;
+        flex-direction: column;
+    }
+}
 
+body {
+    font-family: 'Press Start 2P' !important;
+}
 .center {
     display: flex;
     justify-content: center;
@@ -31,6 +40,7 @@
     display: flex;
     flex-flow: row;
     row-gap: 1rem;
+    gap: 0.5rem;
     justify-content: center;
     margin-top: 0.5rem;
 }
@@ -43,13 +53,31 @@
     display: flex;
     flex-flow: row;
     row-gap: 3rem;
+    gap: 1rem;
+
 }
 
 #unlocked-box {
+    justify-content: center;
     display: flex;
-    flex: row;
+    flex-flow: row;
+
+    flex-wrap: wrap;
 }
 
+#locked-box {
+    justify-content: center;
+    display: flex;
+    flex-flow: row;
+
+    flex-wrap: wrap;
+}
+
+.nes-container {
+    width: 14rem;
+    height: 13rem;
+    background: white; 
+}
 
 /* Type Classes */
 .is-bug-type {

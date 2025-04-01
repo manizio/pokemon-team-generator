@@ -6,12 +6,7 @@ import "fmt"
 // Exibe o time sorteado
 templ Team(data models.DataRequest) {
     for _, pokemon := range data.Pokemons {
-        <div id={ fmt.Sprintf("pokemon-box-%d", pokemon.ID)} class="pokemon-box">
-            <div id={ fmt.Sprintf("pokemon-%d", pokemon.ID)}>
-            @PokemonDiv(pokemon)
-            </div>
-            @PokemonControls(pokemon.ID)
-        </div>
+        @Pokemon(pokemon)
     }
 
     <div id="free-slots" hx-swap-oob="true">
@@ -23,21 +18,30 @@ templ Team(data models.DataRequest) {
     </div>
 }
 
+templ Pokemon(pokemon models.Pokemon) {
+    <div id={ fmt.Sprintf("pokemon-box-%d", pokemon.ID)} class="pokemon-box">
+        <div id={ fmt.Sprintf("pokemon-%d", pokemon.ID)} class="pokemon-container">
+        @PokemonDiv(pokemon)
+        </div>
+        @PokemonControls(pokemon.ID)
+    </div>
+
+}
 templ Lock(pokemon models.Pokemon, freeSlots int) {
-    <div id={ fmt.Sprintf("lock-box-%d", pokemon.ID)} hx-swap-oob="beforeend:#locked-box">
-        <div id={ fmt.Sprintf("locked-pokemon-%d", pokemon.ID) }>
-            <div id={ fmt.Sprintf("pokemon-%d", pokemon.ID) }>
-                @PokemonDiv(pokemon)
-            </div>
-            <div class="pokemon-controls">
-                <button id={ fmt.Sprintf("lock-button-%d", pokemon.ID) } 
-                name="unlock" 
-                hx-post="/unlock" 
-                hx-vals='js:{"freeSlots": document.getElementById("free-slots-count").textContent}'
-                value={ fmt.Sprint(pokemon.ID) } class="nes-btn is-warning">Unlock</button>
+        <div id={ fmt.Sprintf("lock-box-%d", pokemon.ID)} hx-swap-oob="beforeend:#locked-box">
+            <div id={ fmt.Sprintf("locked-pokemon-%d", pokemon.ID) }>
+                <div id={ fmt.Sprintf("pokemon-%d", pokemon.ID) }>
+                    @PokemonDiv(pokemon)
+                </div>
+                <div class="pokemon-controls">
+                    <button id={ fmt.Sprintf("lock-button-%d", pokemon.ID) } 
+                    name="unlock" 
+                    hx-post="/unlock" 
+                    hx-vals='js:{"freeSlots": document.getElementById("free-slots-count").textContent}'
+                    value={ fmt.Sprint(pokemon.ID) } class="nes-btn is-warning">Unlock</button>
+                </div>
             </div>
         </div>
-    </div>
     <div id={ fmt.Sprintf("pokemon-box-%d", pokemon.ID) } hx-swap-oob="delete"></div>
     <div id="free-slots" hx-swap-oob="true">
         @RandomPokemonCount(freeSlots)
@@ -75,11 +79,15 @@ templ PokemonDiv(pokemon models.Pokemon) {
 
 templ PokemonControls(id int ) {
     <div class="pokemon-controls">
-        <button class="nes-btn is-success" hx-post="/swap" hx-target={ fmt.Sprintf("#pokemon-%d", id)} hx-include="#pokedex">Swap
-        </button>
-        <button id={ fmt.Sprintf("lock-button-%d", id) } 
-            hx-vals='js:{"freeSlots": document.getElementById("free-slots-count").textContent}' name="lock" 
+        <div id="button-swap">
+            <button class="nes-btn is-success" hx-post="/swap" hx-swap="outerHTML" hx-target={ fmt.Sprintf("#pokemon-box-%d", id)} hx-include="#pokedex">Swap
+            </button>
+        </div>
+        <div id="button-lock">
+            <button id={ fmt.Sprintf("lock-button-%d", id) } 
+        hx-vals='js:{"freeSlots": document.getElementById("free-slots-count").textContent}' name="lock" 
             hx-post="/lock" value={ fmt.Sprint(id) } class="nes-btn is-warning">Lock</button>
+        </div>
     </div>
 
 }

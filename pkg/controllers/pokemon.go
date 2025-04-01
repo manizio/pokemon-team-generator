@@ -113,7 +113,7 @@ func SwapPokemon(w http.ResponseWriter, r *http.Request) {
 	pokemon.IsMythical = pokeInfo.IsMythical
 	pokemon.IsLegendary = pokeInfo.IsLegendary
 
-	components.PokemonDiv(pokemon).Render(r.Context(), w)
+	components.Pokemon(pokemon).Render(r.Context(), w)
 
 }
 
