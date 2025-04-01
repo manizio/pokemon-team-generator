@@ -4,19 +4,62 @@ import "pokemon-team-generator/pkg/models"
 import "fmt"
 
 // Exibe o time sorteado
-templ Team(team []models.Pokemon) {
-for i, pokemon := range team {
-<div class="pokemon-box">
-    <div id={ fmt.Sprintf("box-%d", i)}>
-        @PokemonDiv(pokemon)
+templ Team(data models.DataRequest) {
+    for _, pokemon := range data.Pokemons {
+        <div id={ fmt.Sprintf("pokemon-box-%d", pokemon.ID)} class="pokemon-box">
+            <div id={ fmt.Sprintf("pokemon-%d", pokemon.ID)}>
+            @PokemonDiv(pokemon)
+            </div>
+            @PokemonControls(pokemon.ID)
+        </div>
+    }
+
+    <div id="free-slots" hx-swap-oob="true">
+        @RandomPokemonCount(data.FreeSlots)
     </div>
-    <div class="pokemon-controls">
-        <p class="nes-btn is-success" hx-post="/swap" hx-target={ fmt.Sprintf("#box-%d", i)} hx-include="#pokedex">Swap
-        </p>
+
+    <div id="generate-button" hx-swap-oob="true">
+        @GenerateButton()
     </div>
-</div>
 }
+
+templ Lock(pokemon models.Pokemon, freeSlots int) {
+    <div id={ fmt.Sprintf("lock-box-%d", pokemon.ID)} hx-swap-oob="beforeend:#locked-box">
+        <div id={ fmt.Sprintf("locked-pokemon-%d", pokemon.ID) }>
+            <div id={ fmt.Sprintf("pokemon-%d", pokemon.ID) }>
+                @PokemonDiv(pokemon)
+            </div>
+            <div class="pokemon-controls">
+                <button id={ fmt.Sprintf("lock-button-%d", pokemon.ID) } 
+                name="unlock" 
+                hx-post="/unlock" 
+                hx-vals='js:{"freeSlots": document.getElementById("free-slots-count").textContent}'
+                value={ fmt.Sprint(pokemon.ID) } class="nes-btn is-warning">Unlock</button>
+            </div>
+        </div>
+    </div>
+    <div id={ fmt.Sprintf("pokemon-box-%d", pokemon.ID) } hx-swap-oob="delete"></div>
+    <div id="free-slots" hx-swap-oob="true">
+        @RandomPokemonCount(freeSlots)
+    </div>
 }
+
+templ Unlock(pokemon models.Pokemon, freeSlots int) {
+    <div id={ fmt.Sprintf("unlock-box-%d", pokemon.ID)} hx-swap-oob="beforeend:#unlocked-box">
+        <div id={ fmt.Sprintf("pokemon-box-%d", pokemon.ID)} class="pokemon-box">
+            <div id={ fmt.Sprintf("pokemon-%d", pokemon.ID) }>
+                @PokemonDiv(pokemon)
+            </div>
+            @PokemonControls(pokemon.ID)
+        </div>
+    </div>
+    <div id={ fmt.Sprintf("locked-pokemon-%d", pokemon.ID)} hx-swap-oob="delete"></div>
+
+    <div id="free-slots" hx-swap-oob="true">
+        @RandomPokemonCount(freeSlots)
+    </div>
+}
+
 
 // Div com o pokémon sorteado
 templ PokemonDiv(pokemon models.Pokemon) {
@@ -30,6 +73,16 @@ templ PokemonDiv(pokemon models.Pokemon) {
 </div>
 }
 
+templ PokemonControls(id int ) {
+    <div class="pokemon-controls">
+        <button class="nes-btn is-success" hx-post="/swap" hx-target={ fmt.Sprintf("#pokemon-%d", id)} hx-include="#pokedex">Swap
+        </button>
+        <button id={ fmt.Sprintf("lock-button-%d", id) } 
+            hx-vals='js:{"freeSlots": document.getElementById("free-slots-count").textContent}' name="lock" 
+            hx-post="/lock" value={ fmt.Sprint(id) } class="nes-btn is-warning">Lock</button>
+    </div>
+
+}
 templ PokemonTypes(pokemonTypes []models.PokemonType) {
     <div style="margin-top: 1rem; width: 100%; font-size: 1rem; justify-content: center; text-align: center; display: flex;">
             for _, t := range pokemonTypes {
@@ -38,6 +91,17 @@ templ PokemonTypes(pokemonTypes []models.PokemonType) {
                 </div>
             }
     </div>
+}
+func pokemonToJson(pokemon models.Pokemon) string { 
+    return fmt. Sprintf(`data: {"id": %d, "species": %v, "sprites": %v,"is_mythical": %v,"is_legendary": %v,"types": %v }`,
+            pokemon.ID, 
+            pokemon.Species,
+            pokemon.Sprite,
+            pokemon.IsMythical,
+            pokemon.IsLegendary,
+            pokemon.Types,
+        ) 
+
 }
 templ checkCategory (pokemon models.Pokemon) {
     if pokemon.IsLegendary {

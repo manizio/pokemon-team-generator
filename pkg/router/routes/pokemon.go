@@ -20,4 +20,14 @@ var pokemonRoutes = []Route {
 		Method: http.MethodPost,
 		F: controllers.SwapPokemon,
 	},
+	{
+		URI: "/lock",
+		Method: http.MethodPost,
+		F: controllers.LockPokemon,
+	},
+	{
+		URI: "/unlock",
+		Method: http.MethodPost,
+		F: controllers.UnlockPokemon,
+	},
 }

@@ -25,8 +25,8 @@ type Pokemon struct {
 	Sprite struct {
 		FrontDefault string `json:"front_default"`
 	} `json:"sprites"`
-	IsMythical  bool
-	IsLegendary bool
+	IsMythical  bool `json:"is_mythical"`
+	IsLegendary bool `json:"is_legendary"`
 	Types []PokemonType `json:"types"`
 }
 
@@ -63,6 +63,25 @@ func GetSpeciesInfo(url string) (SpeciesInfo, error) {
 	return species, nil
 
 }
+func GetSpeciesInfoByID(id int) (SpeciesInfo, error) {
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-species/%d", id)
+	res, err := requests.MakeRequest("GET", url, nil)
+
+	if err != nil {
+		return SpeciesInfo{}, err
+	}
+	defer res.Body.Close()
+
+	var species SpeciesInfo
+
+	if err = json.NewDecoder(res.Body).Decode(&species); err != nil {
+		return SpeciesInfo{}, err
+	}
+
+	return species, nil
+
+}
+
 func GetRandomPokemon() (Pokemon, error) {
 	number := utils.GenerateRandomNumber()
 	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%v", number)

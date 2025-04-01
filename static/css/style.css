@@ -39,6 +39,17 @@
     margin: 0.5rem;
 }
 
+.locked-in {
+    display: flex;
+    flex-flow: row;
+    row-gap: 3rem;
+}
+
+#unlocked-box {
+    display: flex;
+    flex: row;
+}
+
 
 /* Type Classes */
 .is-bug-type {

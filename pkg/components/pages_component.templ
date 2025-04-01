@@ -1,5 +1,7 @@
 package components
 
+import "fmt"
+
 templ scripts() {
 <!--Stylesheets-->
 <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
@@ -31,17 +33,28 @@ templ HomePage() {
             <div>
                 @GameSelector()
             </div>
+            <div id="free-slots" >
+                @RandomPokemonCount(6)
+            </div>
         </div>
-        <div>
-            <button hx-post="/team" hx-target="#team-div" class="nes-btn is-primary">
-                Gerar
-            </button>
-        </div>
+            @GenerateButton()
     </form>
-    <div id="team-div" class="center"></div>
+    <div id="team-div" class="center">
+        <div id="locked-box" class="locked-in"></div>
+        <div id="unlocked-box"></div>
+    </div>
 </body>
 
 </html>
+}
+
+templ GenerateButton() {
+    <button hx-post="/team" 
+            hx-vals='js:{"freeSlots": document.getElementById("free-slots-count").textContent}' 
+            hx-target="#unlocked-box" 
+            class="nes-btn is-primary">
+        Gerar
+    </button>
 }
 
 templ GameSelector() {
@@ -70,5 +83,13 @@ templ GameSelector() {
             <option value="32">Scarlet/Violet - Teal Mask</option>
             <option value="33">Scarlet/Violet - Indigo Disk</option>
         </select>
+    </div>
+}
+
+templ RandomPokemonCount(freeSlots int) {
+    <div id="free-slots">
+        <div id="random-count">
+            <p>Pokémons a serem aleatorizados:</p><span id="free-slots-count">{ fmt.Sprint(freeSlots) }</span>
+        </div>
     </div>
 }

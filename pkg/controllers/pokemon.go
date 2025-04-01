@@ -19,19 +19,32 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	pokedexID, err := strconv.Atoi(r.FormValue("pokedex"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	freeSlots, err := strconv.Atoi(r.FormValue("freeSlots"))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
+
+	if freeSlots == 0 {
+		return
+	}
+
 
 	fullPokedex, err := getFullPokedex(pokedexID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
-	teamChannel := make(chan models.Pokemon, 6)
+	teamChannel := make(chan models.Pokemon, freeSlots)
 	var team []models.Pokemon
-	for range 6 {
+	for range freeSlots {
 		dexLen := len(fullPokedex.PokemonEntries)
 		randomIdx := utils.GenerateRandomNumberN(dexLen)
 		pokeInfo, _ := models.GetSpeciesInfo(
@@ -41,7 +54,9 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 		go func(pokeInfo models.SpeciesInfo) {
 			pokemon, err := models.GetPokemonByID(pokeInfo.ID)
 			if err != nil {
+				fmt.Println(err.Error())
 				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
 			}
 			pokemon.Format()
 
@@ -52,11 +67,15 @@ func CreateTeam(w http.ResponseWriter, r *http.Request) {
 		}(pokeInfo)
 	}
 
-	for range 6 {
+	for range freeSlots {
 		team = append(team, <-teamChannel)
 	}
 
-	components.Team(team).Render(r.Context(), w)
+	var data models.DataRequest
+
+	data.Pokemons = team
+	data.FreeSlots = freeSlots 
+	components.Team(data).Render(r.Context(), w)
 }
 
 // Troca o Pokémon selecionado
@@ -68,11 +87,13 @@ func SwapPokemon(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	fullPokedex, err := getFullPokedex(pokedexID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	dexLen := len(fullPokedex.PokemonEntries)
@@ -84,6 +105,7 @@ func SwapPokemon(w http.ResponseWriter, r *http.Request) {
 	pokemon, err := models.GetPokemonByID(pokeInfo.ID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	pokemon.Format()
@@ -92,6 +114,63 @@ func SwapPokemon(w http.ResponseWriter, r *http.Request) {
 	pokemon.IsLegendary = pokeInfo.IsLegendary
 
 	components.PokemonDiv(pokemon).Render(r.Context(), w)
+
+}
+
+func LockPokemon(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
+	pokemonID, _ := strconv.Atoi(r.FormValue("lock")) 
+	freeSlots, _ := strconv.Atoi(r.FormValue("freeSlots"))
+	freeSlots -= 1
+	pokemon, err := models.GetPokemonByID(pokemonID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	pokeInfo, err := models.GetSpeciesInfoByID(pokemonID)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	pokemon.Format()
+
+	pokemon.IsMythical = pokeInfo.IsMythical
+	pokemon.IsLegendary = pokeInfo.IsLegendary
+
+	components.Lock(pokemon, freeSlots).Render(r.Context(), w)
+
+}
+
+func UnlockPokemon(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	pokemonID, _ := strconv.Atoi(r.FormValue("unlock")) 
+	freeSlots, _ := strconv.Atoi(r.FormValue("freeSlots"))
+
+	freeSlots += 1
+
+	pokemon, err := models.GetPokemonByID(pokemonID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	pokeInfo, err := models.GetSpeciesInfoByID(pokemonID)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	pokemon.Format()
+
+	pokemon.IsMythical = pokeInfo.IsMythical
+	pokemon.IsLegendary = pokeInfo.IsLegendary
+
+	components.Unlock(pokemon, freeSlots).Render(r.Context(), w)
 
 }
 

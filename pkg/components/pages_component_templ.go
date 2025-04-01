@@ -8,6 +8,8 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "fmt"
+
 func scripts() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -74,7 +76,52 @@ func HomePage() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div><div><button hx-post=\"/team\" hx-target=\"#team-div\" class=\"nes-btn is-primary\">Gerar</button></div></form><div id=\"team-div\" class=\"center\"></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><div id=\"free-slots\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = RandomPokemonCount(6).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = GenerateButton().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</form><div id=\"team-div\" class=\"center\"><div id=\"locked-box\" class=\"locked-in\"></div><div id=\"unlocked-box\"></div></div></body></html>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+func GenerateButton() templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<button hx-post=\"/team\" hx-vals=\"js:{&#34;freeSlots&#34;: document.getElementById(&#34;free-slots-count&#34;).textContent}\" hx-target=\"#unlocked-box\" class=\"nes-btn is-primary\">Gerar</button>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -98,12 +145,54 @@ func GameSelector() templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var3 == nil {
-			templ_7745c5c3_Var3 = templ.NopComponent
+		templ_7745c5c3_Var4 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var4 == nil {
+			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<label for=\"default_select\">Selecione uma Pokedex</label><div class=\"nes-select\"><select id=\"pokedex\" name=\"pokedex\" required id=\"default_select\"><option value=\"1\">Todas as Pokedexes</option> <option value=\"2\">Red/Blue/Yellow</option> <option value=\"3\">Gold/Silver/Crystal</option> <option value=\"4\">Ruby/Sapphire/Emerald</option> <option value=\"5\">Diamond/Pearl</option> <option value=\"6\">Platinum</option> <option value=\"7\">Heart Gold/Soul Silver</option> <option value=\"8\">Black/White</option> <option value=\"9\">Black 2/White 2</option> <option value=\"12\">X/Y</option> <option value=\"15\">Omega Ruby/Alpha Sapphire</option> <option value=\"16\">Sun/Moon</option> <option value=\"21\">Ultra Sun/Ultra Moon</option> <option value=\"26\">Let's Go Pikachu/Let's Go Eevee</option> <option value=\"27\">Sword/Shield</option> <option value=\"28\">Sword/Shield - Isle of Armor</option> <option value=\"29\">Sword/Shield - Crown Tundra</option> <option value=\"30\">Legends: Arceus</option> <option value=\"31\">Scarlet/Violet</option> <option value=\"32\">Scarlet/Violet - Teal Mask</option> <option value=\"33\">Scarlet/Violet - Indigo Disk</option></select></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<label for=\"default_select\">Selecione uma Pokedex</label><div class=\"nes-select\"><select id=\"pokedex\" name=\"pokedex\" required id=\"default_select\"><option value=\"1\">Todas as Pokedexes</option> <option value=\"2\">Red/Blue/Yellow</option> <option value=\"3\">Gold/Silver/Crystal</option> <option value=\"4\">Ruby/Sapphire/Emerald</option> <option value=\"5\">Diamond/Pearl</option> <option value=\"6\">Platinum</option> <option value=\"7\">Heart Gold/Soul Silver</option> <option value=\"8\">Black/White</option> <option value=\"9\">Black 2/White 2</option> <option value=\"12\">X/Y</option> <option value=\"15\">Omega Ruby/Alpha Sapphire</option> <option value=\"16\">Sun/Moon</option> <option value=\"21\">Ultra Sun/Ultra Moon</option> <option value=\"26\">Let's Go Pikachu/Let's Go Eevee</option> <option value=\"27\">Sword/Shield</option> <option value=\"28\">Sword/Shield - Isle of Armor</option> <option value=\"29\">Sword/Shield - Crown Tundra</option> <option value=\"30\">Legends: Arceus</option> <option value=\"31\">Scarlet/Violet</option> <option value=\"32\">Scarlet/Violet - Teal Mask</option> <option value=\"33\">Scarlet/Violet - Indigo Disk</option></select></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+func RandomPokemonCount(freeSlots int) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var5 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var5 == nil {
+			templ_7745c5c3_Var5 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div id=\"free-slots\"><div id=\"random-count\"><p>Pokémons a serem aleatorizados:</p><span id=\"free-slots-count\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(freeSlots))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/components/pages_component.templ`, Line: 92, Col: 102}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</span></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
