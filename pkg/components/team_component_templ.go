@@ -523,7 +523,7 @@ func PokemonTypes(pokemonTypes []models.PokemonType) templ.Component {
 			templ_7745c5c3_Var24 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<div style=\"margin-top: 1rem; width: 100%; font-size: 1rem; justify-content: center; text-align: center; display: flex;\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<div style=\"gap: 0.2rem; margin-top: 1rem; width: 100%; font-size: 1rem; justify-content: center; text-align: center; display: flex;\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
